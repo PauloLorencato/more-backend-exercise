@@ -1,5 +1,5 @@
 module.exports = User = require('mongoose').model('User', {
-    user: String,
+    name: String,
     email: String,
     password: String
 })
