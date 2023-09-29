@@ -1,4 +1,5 @@
 jwt = require('jsonwebtoken')
+path = require('node:path')
 async function checkToken(req, res, next) {
     const authHeader = await req.headers['authorization'],
     token = authHeader && authHeader.split(' ')[1],
@@ -7,11 +8,10 @@ async function checkToken(req, res, next) {
       return res.status(400).json({msg: "Sem token!"})
     }
     try {
-      const auth = await jwt.verify(token, SKEY)
+      await jwt.verify(token, SKEY)
+      next()
     } catch (error) {
-      console.log(error)
-      return res.status(400).json({msg: "Acesso negado!"})
+      return res.status(422).sendFile(path.resolve('./src/signin.html'))
     }
-    next()
 }
 module.exports = checkToken
